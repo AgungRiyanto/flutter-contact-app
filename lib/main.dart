@@ -1,3 +1,4 @@
+import 'package:flutter_contact_app/models/contact.dart';
 import 'package:flutter_contact_app/providers/contact_provider.dart';
 import 'package:flutter_contact_app/screens/detail.dart';
 import 'package:flutter_contact_app/screens/home.dart';
@@ -34,9 +35,6 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       home: Home(),
-      routes: {
-        "detail": (context) => Detail(),
-      },
     );
   }
 }

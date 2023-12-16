@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contact_app/providers/contact_provider.dart';
+import 'package:flutter_contact_app/screens/detail.dart';
 import 'package:flutter_contact_app/widgets/contact_list_item.dart';
 import 'package:flutter_contact_app/widgets/header.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,17 @@ class _HomeState extends State<Home> {
         itemCount: data.length,
         itemBuilder: (context, index) => ContactListItem(
           item: data[index],
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration: Duration(seconds: 1),
+                pageBuilder: (_, __, ___) => Detail(
+                  detail: data[index],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

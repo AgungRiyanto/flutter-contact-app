@@ -91,7 +91,9 @@ class _DetailState extends State<Detail> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.transgender_outlined),
+                  Icon(detail.gender == 'male'
+                      ? Icons.male_outlined
+                      : Icons.female_outlined),
                   SizedBox(width: 10),
                   Text(detail.gender)
                 ],

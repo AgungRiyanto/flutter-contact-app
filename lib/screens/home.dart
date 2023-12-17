@@ -13,12 +13,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String searchQuery = '';
+  String genderSelected = '';
   @override
   void initState() {
     super.initState();
     final contactProvider =
         Provider.of<ContactProvider>(context, listen: false);
-    contactProvider.getContactList(context);
+    contactProvider.getContactList(context, searchQuery, genderSelected);
   }
 
   Widget buildList(data) {
@@ -43,13 +45,75 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void handleGetList(q, gender) {
+    final provider = Provider.of<ContactProvider>(context, listen: false);
+    provider.getContactList(context, q, gender);
+  }
+
+  void onTapFilter() {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Filter by gender'),
+          content: Column(
+            children: [
+              ListTile(
+                title: const Text('Male'),
+                leading: Radio(
+                  value: 'male',
+                  groupValue: genderSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      genderSelected = value!;
+                    });
+                    handleGetList(searchQuery, value);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Female'),
+                leading: Radio(
+                  value: 'female',
+                  groupValue: genderSelected,
+                  onChanged: (value) {
+                    setState(() {
+                      genderSelected = value!;
+                    });
+                    handleGetList(searchQuery, value);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ContactProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: [Header(), buildList(provider.contacts)],
+          children: [
+            Header(
+              onSearch: (query) {
+                setState(() {
+                  searchQuery = query;
+                });
+                handleGetList(query, genderSelected);
+              },
+              onTapFilter: onTapFilter,
+            ),
+            provider.isLoading
+                ? Expanded(child: Center(child: CircularProgressIndicator()))
+                : buildList(provider.contacts)
+          ],
         ),
       ),
     );

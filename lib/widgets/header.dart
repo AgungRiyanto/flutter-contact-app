@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  final Function(String q) onSearch;
+  final Function() onTapFilter;
+
+  const Header({Key? key, required this.onSearch, required this.onTapFilter})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +21,14 @@ class Header extends StatelessWidget {
                 'Contacts',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.tune))
+              IconButton(onPressed: onTapFilter, icon: Icon(Icons.tune))
             ],
           ),
           SizedBox(
             height: 13,
           ),
           TextField(
+            onSubmitted: onSearch,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.search),
               hintText: 'Search',

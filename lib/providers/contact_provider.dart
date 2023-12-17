@@ -7,9 +7,10 @@ class ContactProvider extends ChangeNotifier {
   bool isLoading = false;
   List<Contact> contacts = [];
 
-  getContactList(context) async {
+  getContactList(context, String searchQuery, String gender) async {
     isLoading = true;
-    contacts = await httpService.getContactList();
+    contacts =
+        await httpService.getContactList(name: searchQuery, gender: gender);
     isLoading = false;
 
     notifyListeners();
